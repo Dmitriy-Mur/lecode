@@ -5,13 +5,13 @@
   "version": "0.0.1",
   "publisher": "lecodes",
   "engines": {
-    "vscode": "^1.140.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:app.json"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
