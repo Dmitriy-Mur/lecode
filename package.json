@@ -1,23 +1,108 @@
 {
   "name": "lecodes",
-  "displayName": "lecodes",
-  "description": "",
+  "displayName": "LeCodes",
+  "description": "Live mobile preview, QR pairing and lecodes dev logs for LeCodes projects",
   "version": "0.0.1",
+  "publisher": "lecodes",
   "engines": {
     "vscode": "^1.140.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:app.json"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "lecodes.helloWorld",
-        "title": "Hello World"
+        "command": "lecodes.preview.open",
+        "title": "Open Preview",
+        "category": "LeCodes",
+        "icon": "$(device-mobile)"
+      },
+      {
+        "command": "lecodes.preview.reload",
+        "title": "Reload Preview",
+        "category": "LeCodes",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "lecodes.preview.stop",
+        "title": "Stop Dev Server",
+        "category": "LeCodes",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "lecodes.qr.show",
+        "title": "Show QR Code",
+        "category": "LeCodes",
+        "icon": "$(qrcode)"
+      },
+      {
+        "command": "lecodes.logs.show",
+        "title": "Show Logs",
+        "category": "LeCodes",
+        "icon": "$(output)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "lecodes.preview.reload",
+          "when": "activeWebviewPanelId == lecodes.preview",
+          "group": "navigation@1"
+        },
+        {
+          "command": "lecodes.qr.show",
+          "when": "activeWebviewPanelId == lecodes.preview",
+          "group": "navigation@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "lecodes.preview.open"
+        },
+        {
+          "command": "lecodes.preview.reload"
+        },
+        {
+          "command": "lecodes.preview.stop"
+        },
+        {
+          "command": "lecodes.qr.show"
+        },
+        {
+          "command": "lecodes.logs.show"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "LeCodes",
+      "properties": {
+        "lecodes.cliPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the lecodes binary. Empty = look up `lecodes` on PATH."
+        },
+        "lecodes.devPort": {
+          "type": "number",
+          "default": 4499,
+          "description": "Port passed to `lecodes dev --port`."
+        },
+        "lecodes.preview.autoReload": {
+          "type": "boolean",
+          "default": true,
+          "description": "Reload the preview iframe when project files change (in addition to lecodes hot reload)."
+        },
+        "lecodes.preview.openSystemBrowser": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pass `--web` so the CLI also opens the system browser. The VS Code panel still embeds http://localhost:<port>/web/."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -33,10 +118,14 @@
     "lint": "eslint src",
     "test": "vscode-test"
   },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
   "devDependencies": {
     "@types/vscode": "^1.140.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "24.x",
+    "@types/qrcode": "^1.5.5",
     "typescript-eslint": "^8.61.1",
     "eslint": "^10.5.0",
     "esbuild": "^0.28.1",
