@@ -10,9 +10,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "workspaceContains:app.json"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
